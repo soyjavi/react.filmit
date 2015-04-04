@@ -11,10 +11,12 @@ pkg     = require "./package.json"
 # -- FILES ---------------------------------------------------------------------
 path =
   build     :   "./"
-  app       : [ "source/app.coffee"
+  app       : [
+                "source/app.coffee"
                 "source/entities/*.coffee"
                 "source/styles/*.coffee"
-                "source/components/*.cjsx"]
+                "source/components/*.cjsx"
+              ]
 
 banner = [
   "/**"
@@ -30,7 +32,7 @@ banner = [
 # -- TASKS ---------------------------------------------------------------------
 gulp.task "app", ->
   gulp.src path.app
-    .pipe concat "index.ios.compiled.cjsx"
+    .pipe concat "index.ios.cjsx"
     .pipe cjsx().on "error", gutil.log
     .pipe gulp.dest path.build
     .pipe uglify mangle: true
