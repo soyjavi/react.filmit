@@ -1,0 +1,20 @@
+{
+  "name"              : "reactFilmit",
+  "version"           : "0.0.1",
+  "private"           : true,
+  "scripts": {
+    "start"           : "node_modules/react-native/packager/packager.sh"
+  },
+  "dependencies": {
+    "coffee-script"   : "*",
+    "react-native"    : "^0.3.4"
+  },
+  "devDependencies"   : {
+    "gulp"            : "*",
+    "gulp-cjsx"       : "*",
+    "gulp-concat"     : "*",
+    "gulp-header"     : "*",
+    "gulp-uglify"     : "*",
+    "gulp-util"       : "*"
+  }
+}
