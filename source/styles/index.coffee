@@ -1,12 +1,16 @@
 StyleSheet = require('react-native').StyleSheet
 
+
+C =
+  BACKGROUND: '#F5FCFF'
+
 app.styles = StyleSheet.create
   container:
     flex            : 1
     flexDirection   : 'row'
     justifyContent  : 'center'
     alignItems      : 'center'
-    backgroundColor : '#F5FCFF'
+    backgroundColor : C.BACKGROUND
 
   rightContainer:
     flex            : 1
@@ -26,4 +30,13 @@ app.styles = StyleSheet.create
 
   listView:
     paddingTop      : 20
-    backgroundColor : '#fff'
+    backgroundColor : C.BACKGROUND
+
+  # -- Loading
+  centering:
+    alignItems      : 'center'
+    justifyContent  : 'center'
+    height          : 128
+
+  highlight:
+    backgroundColor           : '#f00'

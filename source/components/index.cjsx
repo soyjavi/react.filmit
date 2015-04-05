@@ -2,10 +2,12 @@
 
 React = require('react-native')
 {
+  ActivityIndicatorIOS,
   AppRegistry,
   Image,
   ListView,
   Text,
+  TouchableHighlight,
   View,
 } = React
 
@@ -21,7 +23,6 @@ reactFilmit = React.createClass
     @fetchData()
 
   fetchData: ->
-    @setState loaded: false
     fetch(REQUEST_URL)
       .then (response) => response.json()
       .then (responseData) =>
@@ -33,23 +34,21 @@ reactFilmit = React.createClass
   render: ->
     unless @state.loaded
       return (
-        <View style={app.styles.container}>
-          <Text>
-            Loading movies...
-          </Text>
-        </View>
+        <ActivityIndicatorIOS
+          animating=true
+          style={[app.styles.centering]}
+          size="large"
+        />
       )
 
-    return (
-      <ListView
-        dataSource={@state.dataSource}
-        renderRow={@renderMovie}
-        style={app.styles.listView}
-      />
-    )
+    <ListView
+      dataSource={@state.dataSource}
+      renderRow={@renderMovie}
+      style={app.styles.listView}
+    />
 
-  renderMovie: (movie) ->
-    return (
+  renderMovie: (movie, sectionID, rowID) ->
+    <TouchableHighlight underlayColor='#f00' onPress={=> @onMovie(rowID)}>
       <View style={app.styles.container}>
         <Image
           source={{uri: movie.posters.thumbnail}}
@@ -60,6 +59,10 @@ reactFilmit = React.createClass
           <Text style={app.styles.year}>{movie.year}</Text>
         </View>
       </View>
-    )
+    </TouchableHighlight>
+
+
+  onMovie: (rowID) ->
+    console.log "rowID", rowID, @state.dataSource
 
 AppRegistry.registerComponent 'reactFilmit', => reactFilmit
