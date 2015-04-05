@@ -11,11 +11,10 @@ pkg     = require "./package.json"
 # -- FILES ---------------------------------------------------------------------
 path =
   build     :   "./"
-  app       : [
-                "source/app.coffee"
-                "source/entities/*.coffee"
-                "source/styles/*.coffee"
-                "source/components/*.cjsx"
+  dist      :   "./dist"
+  app       :   "./source/index.ios.cjsx"
+  modules   : [
+                "./source/*/*"
               ]
 
 banner = [
@@ -32,12 +31,18 @@ banner = [
 # -- TASKS ---------------------------------------------------------------------
 gulp.task "app", ->
   gulp.src path.app
-    .pipe concat "index.ios.cjsx"
+    # .pipe concat "index.ios.cjsx"
     .pipe cjsx().on "error", gutil.log
+    # .pipe uglify mangle: true
     .pipe gulp.dest path.build
-    .pipe uglify mangle: true
 
-gulp.task "init", ["app"]
+gulp.task "modules", ->
+  gulp.src path.modules, base: "./source"
+    .pipe cjsx().on "error", gutil.log
+    .pipe gulp.dest path.dist
+
+gulp.task "init", ["app", "modules"]
 
 gulp.task "default", ->
   gulp.watch path.app, ["app"]
+  gulp.watch path.modules, ["modules"]

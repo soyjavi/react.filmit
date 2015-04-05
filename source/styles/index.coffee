@@ -1,10 +1,9 @@
 StyleSheet = require('react-native').StyleSheet
 
-
 C =
   BACKGROUND: '#F5FCFF'
 
-app.styles = StyleSheet.create
+module.exports = StyleSheet.create
   container:
     flex            : 1
     flexDirection   : 'row'

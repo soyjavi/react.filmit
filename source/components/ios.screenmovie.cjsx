@@ -1,9 +1,8 @@
 'use strict'
 
-React = require('react-native')
+React = require 'react-native'
 {
   ActivityIndicatorIOS,
-  AppRegistry,
   Image,
   ListView,
   Text,
@@ -11,9 +10,11 @@ React = require('react-native')
   View,
 } = React
 
+styles = require '../styles/index'
+
 REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json'
 
-reactFilmit = React.createClass
+module.exports = React.createClass
 
   getInitialState: ->
     dataSource: new ListView.DataSource rowHasChanged: (row1, row2) => row1 isnt row2
@@ -36,7 +37,7 @@ reactFilmit = React.createClass
       return (
         <ActivityIndicatorIOS
           animating=true
-          style={[app.styles.centering]}
+          style={[styles.centering]}
           size="large"
         />
       )
@@ -44,25 +45,22 @@ reactFilmit = React.createClass
     <ListView
       dataSource={@state.dataSource}
       renderRow={@renderMovie}
-      style={app.styles.listView}
+      style={styles.listView}
     />
 
   renderMovie: (movie, sectionID, rowID) ->
-    <TouchableHighlight underlayColor='#f00' onPress={=> @onMovie(rowID)}>
-      <View style={app.styles.container}>
+    <TouchableHighlight activeOpacity='50' underlayColor='#f00' onPress={=> @onMovie(rowID)}>
+      <View style={styles.container}>
         <Image
           source={{uri: movie.posters.thumbnail}}
-          style={app.styles.thumbnail}
+          style={styles.thumbnail}
         />
-        <View style={app.styles.rightContainer}>
-          <Text style={app.styles.title}>{movie.title}</Text>
-          <Text style={app.styles.year}>{movie.year}</Text>
+        <View style={styles.rightContainer}>
+          <Text style={styles.title}>{movie.title}</Text>
+          <Text style={styles.year}>{movie.year}</Text>
         </View>
       </View>
     </TouchableHighlight>
 
-
   onMovie: (rowID) ->
     console.log "rowID", rowID, @state.dataSource
-
-AppRegistry.registerComponent 'reactFilmit', => reactFilmit
