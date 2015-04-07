@@ -4,6 +4,11 @@ C =
   BACKGROUND: '#F5FCFF'
 
 module.exports = StyleSheet.create
+
+  navigator:
+    flex            : 1
+    backgroundColor : C.BACKGROUND
+
   container:
     flex            : 1
     flexDirection   : 'row'
