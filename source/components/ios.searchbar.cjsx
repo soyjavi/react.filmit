@@ -1,5 +1,3 @@
-"use strict"
-
 'use strict'
 
 React         = require 'react-native'

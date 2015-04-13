@@ -5,6 +5,7 @@ React         = require 'react-native'
   ActivityIndicatorIOS,
   Image,
   ListView,
+  TabBarIOS,
   Text,
   TouchableHighlight,
   View,
@@ -38,6 +39,8 @@ module.exports = React.createClass
                   ref="list"
                   dataSource={@state.dataSource}
                   renderRow={@renderMovie}
+                  automaticallyAdjustContentInsets={false}
+                  showsVerticalScrollIndicator={false}
                   style={styles.listView}
                 />
 
@@ -47,8 +50,19 @@ module.exports = React.createClass
         isLoading={@state.isLoading}
         onFocus={@onSearchFocus}
       />
+      <View style={styles.separator} />
       {{content}}
     </View>
+    # <TabBarIOS>
+    #   <TabBarIOS.Item title="Blue Tab">
+    #     <View style={styles.tabContent}>
+    #       <Text>asddd</Text>
+    #     </View>
+    #   </TabBarIOS.Item>
+    #   <TabBarIOS.Item systemIcon="history" badge={23}>
+    #     <Text>asldk</Text>
+    #   </TabBarIOS.Item>
+    # </TabBarIOS>
 
   renderMovie: (movie, sectionID, rowID) ->
     # onSelect
