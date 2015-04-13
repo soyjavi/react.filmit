@@ -12,46 +12,48 @@ React         = require 'react-native'
 
 styles        = require '../styles/index'
 screenMovie   = require './ios.screenmovie'
-REQUEST_URL   = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json'
+SearchBar     = require './ios.searchbar'
 
+API           =
+  URL         : 'http://api.rottentomatoes.com/api/public/v1.0/'
+  KEY         : '7waqfqbprs7pajbz28mqf6vz'
 
 module.exports = React.createClass
 
   getInitialState: ->
     dataSource: new ListView.DataSource rowHasChanged: (row1, row2) => row1 isnt row2
-    loaded    : false
+    isLoading : true
 
   componentDidMount: ->
-    @fetchData()
-
-  fetchData: ->
-    fetch(REQUEST_URL)
-      .then (response) => response.json()
-      .then (responseData) =>
-        @setState
-          dataSource: @state.dataSource.cloneWithRows(responseData.movies)
-          loaded    : true
-      .done()
+    do @searchMovies
 
   render: ->
-    unless @state.loaded
-      return (
-        <ActivityIndicatorIOS
-          animating=true
-          style={[styles.centering]}
-          size="large"
-        />
-      )
+    if @state.isLoading
+      content =
+        <View style={styles.containerEmpty}>
+          <Text>No films</Text>
+        </View>
+    else
+      content = <ListView
+                  ref="list"
+                  dataSource={@state.dataSource}
+                  renderRow={@renderMovie}
+                  style={styles.listView}
+                />
 
-    <ListView
-      dataSource={@state.dataSource}
-      renderRow={@renderMovie}
-      style={styles.listView}
-    />
+    <View style={styles.container}>
+      <SearchBar
+        onSearchChange={@onSearchChange}
+        isLoading={@state.isLoading}
+        onFocus={@onSearchFocus}
+      />
+      {{content}}
+    </View>
 
   renderMovie: (movie, sectionID, rowID) ->
-    <TouchableHighlight activeOpacity='50' underlayColor='#f00' onPress={=> @onMovie(rowID)}>
-      <View style={styles.container}>
+    # onSelect
+    <TouchableHighlight activeOpacity='50' underlayColor='#f00' onPress={=> @onMovie(movie)}>
+      <View style={styles.movieListElement}>
         <Image
           source={{uri: movie.posters.thumbnail}}
           style={styles.thumbnail}
@@ -63,10 +65,34 @@ module.exports = React.createClass
       </View>
     </TouchableHighlight>
 
-  onMovie: (rowID) ->
-    console.log "rowID", rowID, @state.dataSource
-    console.log "navigator?", @props.navigator
+  searchMovies: (query) ->
+    @timeoutID = null
+    @setState isLoading: true
+    if query
+      url = 'movies.json?apikey=' + API.KEY + '&q=' + encodeURIComponent(query) + '&page_limit=32&page=1'
+    else
+      url = 'lists/movies/in_theaters.json?apikey=' + API.KEY + '&page_limit=32&page=1'
+    url = API.URL + url
+    fetch(url)
+      .then (response) => response.json()
+      .then (responseData) =>
+        @setState
+          dataSource: @state.dataSource.cloneWithRows(responseData.movies)
+          isLoading : false
+      .done()
+
+  # -- Events
+  onMovie: (data) ->
     @props.navigator.push
-      title     : "Title " + rowID
+      title     : data.title
       component : screenMovie
-      # passProps : id: rowID
+      passProps : movie: data
+
+  onSearchChange: (event) ->
+    filter = event.nativeEvent.text.toLowerCase()
+    clearTimeout @timeoutID
+    @timeoutID = setTimeout (=> @searchMovies filter), 100
+
+  onSearchFocus: ->
+    console.log @refs.list
+    @refs.listview.getScrollResponder().scrollTo(0, 0)

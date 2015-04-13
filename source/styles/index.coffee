@@ -8,15 +8,27 @@ module.exports = StyleSheet.create
   navigator:
     flex            : 1
     backgroundColor : C.BACKGROUND
+    tintColor       : '#00f'
 
   container:
+    flex            : 1
+    backgroundColor : '#0f0'
+
+  containerEmpty:
     flex            : 1
     flexDirection   : 'row'
     justifyContent  : 'center'
     alignItems      : 'center'
-    backgroundColor : C.BACKGROUND
+    fontSize        : 128
 
-  rightContainer:
+  movieListElement  :
+    flex            : 1
+    flexDirection   : 'row'
+    justifyContent  : 'center'
+    alignItems      : 'center'
+    backgroundColor : '#f00'
+
+  rightContainer    :
     flex            : 1
     marginLeft      : 10
 
@@ -33,8 +45,24 @@ module.exports = StyleSheet.create
     opacity         : 0.5
 
   listView:
-    paddingTop      : 20
+    marginTop       : 0
     backgroundColor : C.BACKGROUND
+
+  # -- SearchBar
+  searchBar:
+    marginTop       : 64
+    marginBottom    : 0
+    padding         : 3
+    paddingLeft     : 8
+    flexDirection   : 'row'
+    alignItems      : 'center'
+
+  searchBarInput:
+    fontSize        : 15
+    flex            : 1
+    height          : 32
+  searchBarSpinner:
+    width           : 32
 
   # -- Loading
   centering:

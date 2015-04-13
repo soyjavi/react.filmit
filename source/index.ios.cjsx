@@ -8,6 +8,7 @@ app = React.createClass
   render: ->
     <React.NavigatorIOS
       style={styles.navigator}
+      tintColor='yellow'
       initialRoute={{
         title: 'Filmit',
         component: screenMovies,
