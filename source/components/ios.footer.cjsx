@@ -17,7 +17,10 @@ module.exports = React.createClass
     selected : 'search'
 
   render: ->
-    <TabBarIOS style={styles.tabBarIOS} selected={@state.selected}>
+    <TabBarIOS
+      style={styles.tabBarIOS}
+      selected={@state.selected}
+    >
       <TabBarIOS.Item
         title='Search'
         icon={_icon 'search'}
@@ -37,6 +40,7 @@ module.exports = React.createClass
 
   onTab: (tab) ->
     @setState selected: tab
+    @props.callback tab
 
 _icon = (imageUri) ->
   uri     : imageUri

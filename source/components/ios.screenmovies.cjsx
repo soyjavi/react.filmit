@@ -1,6 +1,11 @@
 'use strict'
 
 React         = require 'react-native'
+Store         = require('react-native-store')
+SearchBar     = require './ios.searchbar'
+ListMovies    = require './ios.listmovies'
+Footer        = require './ios.footer'
+styles        = require '../styles/index'
 {
   ActivityIndicatorIOS,
   Image,
@@ -12,11 +17,6 @@ React         = require 'react-native'
   View,
 } = React
 
-styles        = require '../styles/index'
-SearchBar     = require './ios.searchbar'
-ListMovies    = require './ios.listmovies'
-Footer        = require './ios.footer'
-
 API           =
   URL         : 'http://api.rottentomatoes.com/api/public/v1.0/'
   KEY         : '7waqfqbprs7pajbz28mqf6vz'
@@ -26,10 +26,13 @@ module.exports = React.createClass
   getInitialState: ->
     dataSource  : new ListView.DataSource rowHasChanged: (row1, row2) => row1 isnt row2
     isLoading   : true
+    pending     : 0
     selectedTab : 'search'
 
   componentDidMount: ->
     do @searchMovies
+    Store.table("items").then (items) =>
+      @setState pending: items.databaseData.items.totalrows
 
   render: ->
     <View style={styles.container}>
@@ -43,7 +46,12 @@ module.exports = React.createClass
         ref='list'
         dataSource={@state.dataSource}
         navigator={@props.navigator} />
-      <Footer selected={@state.selectedTab} navigator={@props.navigator} pending={12}/>
+      <Footer
+        selected={@state.selectedTab}
+        navigator={@props.navigator}
+        pending={@state.pending}
+        callback={@onContext}
+      />
     </View>
 
   searchMovies: (query) ->
@@ -71,3 +79,12 @@ module.exports = React.createClass
 
   onSearchFocus: ->
     @refs.list.getScrollResponder().scrollTo(0, 0)
+
+  onContext: (tab) ->
+    if tab is 'pending'
+      @props.search = @state.dataSource
+      Store.table("items").then (items) =>
+        movies = (data for id, data of items.databaseData.items.rows)
+        @setState dataSource: @state.dataSource.cloneWithRows movies
+    else
+      @setState dataSource: @props.search

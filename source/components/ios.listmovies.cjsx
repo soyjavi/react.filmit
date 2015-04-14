@@ -1,9 +1,9 @@
 'use strict'
 
 
-React         = require 'react-native'
-styles        = require '../styles/index'
-
+React   = require 'react-native'
+Store   = require('react-native-store').table("items")
+styles  = require '../styles/index'
 {
   ActivityIndicatorIOS,
   Image,
@@ -52,5 +52,7 @@ module.exports = React.createClass
       passProps         : movie: movie
       rightButtonTitle  : 'Save'
       onRightButtonPress: =>
-        console.log "@TODO: Save Movie in LocalStorage", movie
-        @props.navigator.pop()
+        Store.then (items) =>
+          id = items.add movie
+          console.log id
+          @props.navigator.pop()
