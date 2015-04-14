@@ -53,3 +53,4 @@ module.exports = React.createClass
       rightButtonTitle  : 'Save'
       onRightButtonPress: =>
         console.log "@TODO: Save Movie in LocalStorage", movie
+        @props.navigator.pop()

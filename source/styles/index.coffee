@@ -2,6 +2,7 @@ StyleSheet = require('react-native').StyleSheet
 
 C =
   BACKGROUND: '#F5FCFF'
+  THEME     : '#ffc414'
 
 module.exports = StyleSheet.create
 
@@ -9,7 +10,7 @@ module.exports = StyleSheet.create
   navigator:
     flex            : 1
     backgroundColor : C.BACKGROUND
-    tintColor       : 'yellow'
+    # tintColor       : 'yellow'
     flexWrap        : 'wrap'
 
   container:
@@ -93,7 +94,6 @@ module.exports = StyleSheet.create
     color: 'red'
     margin: 50
 
-  # -- Loading
   centering:
     alignItems      : 'center'
     justifyContent  : 'center'
@@ -103,7 +103,6 @@ module.exports = StyleSheet.create
     backgroundColor : '#f00'
 
   # -- SCREEN.MOVIE ------------------------------------------------------------
-  # -- Movie
   content:
     padding         : 10
 

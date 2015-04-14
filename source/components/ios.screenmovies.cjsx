@@ -5,6 +5,7 @@ React         = require 'react-native'
   ActivityIndicatorIOS,
   Image,
   ListView,
+  NavigatorIOS,
   TabBarIOS,
   Text,
   TouchableHighlight,
@@ -14,6 +15,7 @@ React         = require 'react-native'
 styles        = require '../styles/index'
 SearchBar     = require './ios.searchbar'
 ListMovies    = require './ios.listmovies'
+Footer        = require './ios.footer'
 
 API           =
   URL         : 'http://api.rottentomatoes.com/api/public/v1.0/'
@@ -22,8 +24,9 @@ API           =
 module.exports = React.createClass
 
   getInitialState: ->
-    dataSource: new ListView.DataSource rowHasChanged: (row1, row2) => row1 isnt row2
-    isLoading : true
+    dataSource  : new ListView.DataSource rowHasChanged: (row1, row2) => row1 isnt row2
+    isLoading   : true
+    selectedTab : 'search'
 
   componentDidMount: ->
     do @searchMovies
@@ -37,11 +40,10 @@ module.exports = React.createClass
       />
       <View style={styles.separator} />
       <ListMovies
-        ref="list"
+        ref='list'
         dataSource={@state.dataSource}
         navigator={@props.navigator} />
-      <TabBarIOS style={styles.tabBarIOS}>
-      </TabBarIOS>
+      <Footer selected={@state.selectedTab} navigator={@props.navigator} pending={12}/>
     </View>
 
   searchMovies: (query) ->
@@ -63,8 +65,9 @@ module.exports = React.createClass
   # -- Events
   onSearchChange: (event) ->
     filter = event.nativeEvent.text.toLowerCase()
-    clearTimeout @timeoutID
-    @timeoutID = setTimeout (=> @searchMovies filter), 100
+    if filter.length > 1 #and not @state.isLoading
+      clearTimeout @timeoutID
+      @timeoutID = setTimeout (=> @searchMovies filter), 100
 
   onSearchFocus: ->
     @refs.list.getScrollResponder().scrollTo(0, 0)
