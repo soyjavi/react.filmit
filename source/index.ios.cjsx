@@ -1,7 +1,6 @@
 'use strict'
 
 React         = require 'react-native'
-screenMovies  = require './dist/components/ios.screenmovies'
 styles        = require './dist/styles/index'
 
 app = React.createClass
@@ -10,8 +9,8 @@ app = React.createClass
       style={styles.navigator}
       tintColor='yellow'
       initialRoute={{
-        title: 'Filmit',
-        component: screenMovies,
+        title     : 'Filmit'
+        component : require './dist/components/ios.screenmovies'
       }}
     />
 

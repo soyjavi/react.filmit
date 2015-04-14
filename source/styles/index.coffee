@@ -5,21 +5,38 @@ C =
 
 module.exports = StyleSheet.create
 
+  # -- COMMONS -----------------------------------------------------------------
   navigator:
     flex            : 1
     backgroundColor : C.BACKGROUND
-    # tintColor       : '#00f'
+    tintColor       : 'yellow'
+    flexWrap        : 'wrap'
 
   container:
     flex            : 1
 
-  containerEmpty:
-    flex            : 1
-    flexDirection   : 'row'
-    justifyContent  : 'center'
-    alignItems      : 'center'
-    fontSize        : 128
+  label:
+    fontSize        : 12
 
+  opacity:
+    opacity         : 0.5
+
+  row:
+    flexDirection   : 'row'
+
+  column:
+    flexDirection   : 'column'
+
+  marginBottom:
+    marginBottom    : 10
+
+  centered:
+    flexDirection   : 'row'
+
+  bold:
+    fontWeight      : 'bold'
+
+  # -- SCREEN.MOVIES -----------------------------------------------------------
   # -- SearchBar
   searchBar:
     marginTop       : 64
@@ -35,12 +52,17 @@ module.exports = StyleSheet.create
   searchBarSpinner:
     width           : 32
 
+  # -- ListMovies
+  listMovies:
+    flex            : 2
+
   # -- ListItem
-  movieListElement  :
+  listItem  :
     flex            : 1
     flexDirection   : 'row'
     justifyContent  : 'center'
     alignItems      : 'center'
+    marginBottom    : 1
 
   rightContainer    :
     flex            : 1
@@ -52,18 +74,15 @@ module.exports = StyleSheet.create
 
   title:
     fontSize        : 18
-    marginBottom    : 4
-
-  year:
-    fontSize        : 12
-    opacity         : 0.5
+    marginBottom    : 2
 
   separator:
     height          : 1
     backgroundColor : '#EEEEEE'
 
-  listView:
-    flex            : 2
+  tabBarIOS:
+    flex            : 0
+    height          : 48
 
   tabContent:
     flex            : 1
@@ -83,9 +102,18 @@ module.exports = StyleSheet.create
   highlight:
     backgroundColor : '#f00'
 
+  # -- SCREEN.MOVIE ------------------------------------------------------------
   # -- Movie
   content:
     padding         : 10
 
   poster:
     height          : 256
+
+  similarItem:
+    flexDirection   : 'column'
+    justifyContent  : 'center'
+    alignItems      : 'center'
+
+  similarTitle:
+    fontSize        : 16

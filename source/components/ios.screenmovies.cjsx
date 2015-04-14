@@ -12,8 +12,8 @@ React         = require 'react-native'
 } = React
 
 styles        = require '../styles/index'
-screenMovie   = require './ios.screenmovie'
 SearchBar     = require './ios.searchbar'
+ListMovies    = require './ios.listmovies'
 
 API           =
   URL         : 'http://api.rottentomatoes.com/api/public/v1.0/'
@@ -29,21 +29,6 @@ module.exports = React.createClass
     do @searchMovies
 
   render: ->
-    if @state.isLoading
-      content =
-        <View style={styles.containerEmpty}>
-          <Text>No films</Text>
-        </View>
-    else
-      content = <ListView
-                  ref="list"
-                  dataSource={@state.dataSource}
-                  renderRow={@renderMovie}
-                  automaticallyAdjustContentInsets={false}
-                  showsVerticalScrollIndicator={false}
-                  style={styles.listView}
-                />
-
     <View style={styles.container}>
       <SearchBar
         onSearchChange={@onSearchChange}
@@ -51,33 +36,13 @@ module.exports = React.createClass
         onFocus={@onSearchFocus}
       />
       <View style={styles.separator} />
-      {{content}}
+      <ListMovies
+        ref="list"
+        dataSource={@state.dataSource}
+        navigator={@props.navigator} />
+      <TabBarIOS style={styles.tabBarIOS}>
+      </TabBarIOS>
     </View>
-    # <TabBarIOS>
-    #   <TabBarIOS.Item title="Blue Tab">
-    #     <View style={styles.tabContent}>
-    #       <Text>asddd</Text>
-    #     </View>
-    #   </TabBarIOS.Item>
-    #   <TabBarIOS.Item systemIcon="history" badge={23}>
-    #     <Text>asldk</Text>
-    #   </TabBarIOS.Item>
-    # </TabBarIOS>
-
-  renderMovie: (movie, sectionID, rowID) ->
-    # onSelect
-    <TouchableHighlight activeOpacity='50' underlayColor='#f00' onPress={=> @onMovie(movie)}>
-      <View style={styles.movieListElement}>
-        <Image
-          source={{uri: movie.posters.thumbnail}}
-          style={styles.thumbnail}
-        />
-        <View style={styles.rightContainer}>
-          <Text style={styles.title}>{movie.title}</Text>
-          <Text style={styles.year}>{movie.year}</Text>
-        </View>
-      </View>
-    </TouchableHighlight>
 
   searchMovies: (query) ->
     @timeoutID = null
@@ -96,17 +61,10 @@ module.exports = React.createClass
       .done()
 
   # -- Events
-  onMovie: (data) ->
-    @props.navigator.push
-      title     : data.title
-      component : screenMovie
-      passProps : movie: data
-
   onSearchChange: (event) ->
     filter = event.nativeEvent.text.toLowerCase()
     clearTimeout @timeoutID
     @timeoutID = setTimeout (=> @searchMovies filter), 100
 
   onSearchFocus: ->
-    console.log @refs.list
-    @refs.listview.getScrollResponder().scrollTo(0, 0)
+    @refs.list.getScrollResponder().scrollTo(0, 0)
