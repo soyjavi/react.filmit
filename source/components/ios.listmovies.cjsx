@@ -29,7 +29,10 @@ module.exports = React.createClass
     />
 
   renderItem: (movie) ->
-    <TouchableHighlight activeOpacity='50' underlayColor='#f00' onPress={=> @onItem(movie)}>
+    <TouchableHighlight
+      activeOpacity='50'
+      underlayColor='#ffc414'
+      onPress={=> @onItem(movie)}>
       <View style={styles.listItem}>
         <Image
           source={{uri: movie.posters.thumbnail}}
@@ -43,8 +46,10 @@ module.exports = React.createClass
     </TouchableHighlight>
 
   onItem: (movie) ->
-    console.log movie
     @props.navigator.push
-      title     : movie.title
-      component : require './ios.screenmovie'
-      passProps : movie: movie
+      title             : movie.title
+      component         : require './ios.screenmovie'
+      passProps         : movie: movie
+      rightButtonTitle  : 'Save'
+      onRightButtonPress: =>
+        console.log "@TODO: Save Movie in LocalStorage", movie
