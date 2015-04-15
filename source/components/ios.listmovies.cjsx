@@ -2,7 +2,7 @@
 
 
 React   = require 'react-native'
-Store   = require('react-native-store').table("items")
+Store   = require('react-native-store')
 styles  = require '../styles/index'
 {
   ActivityIndicatorIOS,
@@ -50,9 +50,8 @@ module.exports = React.createClass
       title             : movie.title
       component         : require './ios.screenmovie'
       passProps         : movie: movie
-      rightButtonTitle  : 'Save'
+      rightButtonTitle  : if movie._id? then 'Delete' else 'Save'
       onRightButtonPress: =>
-        Store.then (items) =>
-          id = items.add movie
-          console.log id
+        Store.table("items").then (movies) =>
+          if movie._id then movies.removeById movie._id else movies.add movie
           @props.navigator.pop()
