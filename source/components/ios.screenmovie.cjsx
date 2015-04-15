@@ -25,12 +25,13 @@ module.exports = React.createClass
     @fetchSimilar @props.movie.links.similar
 
   render: ->
+    poster = @props.movie.posters?.original
+    key = '/54x80/'
+    poster = "http://" + poster.substring poster.indexOf(key) + key.length
+
     <ScrollView>
       <View>
-        <Image
-          source={{uri: @props.movie.posters.detailed}}
-          style={styles.poster}
-        />
+        <Image source={{uri: poster}} style={styles.poster}></Image>
         <View style={styles.content}>
           <View style={[styles.row, styles.title, styles.bold]}>
             <Text style={[styles.title, styles.bold]}>{@props.movie.title}</Text>
